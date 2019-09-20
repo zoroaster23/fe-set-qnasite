@@ -1,16 +1,7 @@
-import answerController from "./AnswerController.js";
-import loginController from "./LoginController.js";
-
 const URL = {
   INIT: "http://localhost:3000/api/questions",
-  LOGIN: "http://localhost:3000/api/login",
-  VALIDATION: "http://localhost:3000/api/token-validation"
+  LOGIN: "http://localhost:3000/api/login"
 };
-
-const USER_INFO = {
-  name: "USER",
-  _id: "tempUser"
-}
 
 //util
 const $ = document.querySelector.bind(document);
@@ -31,6 +22,11 @@ function getAnswerTemplate(answers) {
   }, ``);
 }
 
+function getLoadingAnswerTpl() {
+  return `<li class="answer-list loading" ">
+        Loading.....
+     </li>`;
+}
 
 function getQnATemplate(data) {
   return data.list.reduce((html, { title, question, questionId, answers }) => {
@@ -66,21 +62,4 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch(URL.INIT)
     .then(res => res.json())
     .then(result => renderQnA(result));
-
-  loginController.validateToken(URL.VALIDATION, USER_INFO);
-
-  document.addEventListener("click", (event)=> {
-    const className = event.target.className;
-    
-    switch (className) {
-      case "login-btn":
-        loginController.login(URL.LOGIN, USER_INFO);
-        break;
-    
-      case "comment-submit":
-        answerController.addAnswer(event.target, USER_INFO, URL.INIT);  
-      default:
-        break;
-    }
-  });  
 });

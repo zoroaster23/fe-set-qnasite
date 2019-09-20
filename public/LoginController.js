@@ -3,7 +3,10 @@ import requestHepler from "./RequestHelper.js";
 const loginController = {
   successLogin: (result) => {
     document.getElementsByClassName("login-btn")[0].innerText = "환영합니다";
-    localStorage.setItem("auth-token", result.token);
+
+    if(result.token) {
+      localStorage.setItem("auth-token", result.token);
+    }
   },
 
   login: function (url, userInfo) {
